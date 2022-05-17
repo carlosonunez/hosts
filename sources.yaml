@@ -1,0 +1,19 @@
+sources:
+  - name: Developer Dan's Hosts and Tracking List
+    source: https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt
+    blocks_fb: false
+  - name: Developer Dan's de-AMP List
+    source: https://www.github.developerdan.com/hosts/lists/amp-hosts-extended.txt
+    blocks_fb: false
+  - name: Developer Dan's de-Facebook List
+    source: https://www.github.developerdan.com/hosts/lists/facebook-extended.txt
+    blocks_fb: true
+  - name: Developer Dan's Hate and Junk List
+    source: https://www.github.developerdan.com/hosts/lists/hate-and-junk-extended.txt
+    blocks_fb: false
+  - name: Steven Black's gambling+social+fakenews
+    source: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-social/hosts
+    blocks_fb: true
+  - name: Steven Black's gambling+fakenews
+    source: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts
+    blocks_fb: false
