@@ -55,14 +55,7 @@ process_whitelist() {
       >&2 echo "===> Removing from $file: $pattern"
       gnu_sed -Ei "/$pattern/d" "$file"
     done < <(grep -E "$match_re" "$file")
-  done
-}
-
-clean_hosts_files() {
-  for file in $(tr ',' '\n' <<< "$ALL_FILES")
-  do
-    sort -ro "$file" "$file" &&
-      gnu_sed -i "/^#/d" "$file"
+    gnu_sed -Ei "/^$/d; /^#/d; /^[ ]+#/d" "$file"
   done
 }
 
@@ -81,6 +74,5 @@ do
   >&2 echo "===> Fetching hosts from source: $name ==> $target_file"
   curl -sSL "$url" >> "$target_file"
 done < <(gather_sources)
-clean_hosts_files &&
-  process_whitelist &&
-  >&2 echo "===> Host files are ready"
+process_whitelist &&
+>&2 echo "===> Host files are ready"
