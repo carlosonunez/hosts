@@ -56,6 +56,7 @@ process_whitelist() {
       gnu_sed -Ei "/$pattern/d" "$file"
     done < <(grep -E "$match_re" "$file")
     gnu_sed -Ei "/^$/d; /^#/d; /^[ ]+#/d" "$file"
+    sort -ruo "$file" "$file"
   done
 }
 
