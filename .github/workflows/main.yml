@@ -30,7 +30,7 @@ jobs:
         with:
           name: hosts
       - name: Confirm hosts are present
-        run: "stat ./hosts/hosts/{with,without}-fb.txt &>/dev/null || exit 1"
+        run: "stat *.txt &>/dev/null || exit 1"
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')"
@@ -38,7 +38,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           token: "${{secrets.GITHUB_TOKEN}}"
-          files: ./hosts/hosts/**
+          files: '**.txt'
           tag_name: latest
           body: >
             These are Carlos's Hosts created on ${{ steps.date.outputs.date }}.
