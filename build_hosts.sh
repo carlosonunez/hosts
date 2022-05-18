@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #vi: set ft=bash:
-DOCKER_IMAGE_NAME="build_hosts"
+DOCKER_IMAGE_NAME="briceburg/yq"
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 HOSTS_WITH_FACEBOOK="$SCRIPT_DIR/hosts/with-fb.txt"
 HOSTS_WITHOUT_FACEBOOK="$SCRIPT_DIR/hosts/without-fb.txt"
@@ -8,6 +8,8 @@ SOURCES_FILE="$SCRIPT_DIR/sources.yaml"
 EXCLUSIONS_FILE="$SCRIPT_DIR/exclusions"
 ALL_FILES="${HOSTS_WITH_FACEBOOK},${HOSTS_WITHOUT_FACEBOOK}"
 GNU_SED_CONFIRMED=0
+
+export DOCKER_DEFAULT_PLATFORM='linux/amd64'
 
 gnu_sed() {
   # if sed errors when running --version then it's probably the BSD variant.
@@ -29,14 +31,6 @@ fail() {
   exit 1
 }
 
-build_image() {
-  docker images | grep -q "$DOCKER_IMAGE_NAME" || docker build -t "$DOCKER_IMAGE_NAME" .
-}
-
-delete_image() {
-  docker rmi "$DOCKER_IMAGE_NAME"
-}
-
 create_host_dirs() {
   for file in $(tr ',' '\n' <<< "$ALL_FILES")
   do
@@ -48,7 +42,7 @@ create_host_dirs() {
 
 gather_sources() {
   docker run --rm -v "$SOURCES_FILE:/sources.yaml" "$DOCKER_IMAGE_NAME" \
-    yq -r '.sources[] | .name + "%" + .url + "%" + (.blocks_fb|tostring)' '/sources.yaml' | \
+    -r '.sources[] | .name + "%" + .url + "%" + (.blocks_fb|tostring)' '/sources.yaml' | \
     tr -d $'\r'
 }
 
@@ -73,7 +67,6 @@ clean_hosts_files() {
 }
 
 create_host_dirs
-build_image
 
 while read -r source
 do
