@@ -37,5 +37,6 @@ jobs:
         with:
           token: "${{secrets.GITHUB_TOKEN}}"
           files: hosts/**
+          tag_name: latest
           body: >
             These are Carlos's Hosts created on ${{ steps.date.outputs.date }}.
