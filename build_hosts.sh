@@ -25,7 +25,7 @@ create_host_dirs() {
   for file in $(tr ',' '\n' <<< "$ALL_FILES")
   do
     test -f "$file" && rm -f "$file"
-    test -d "$(dirname "$file")" && mkdir -p "$(dirname "$file")"
+    test -d "$(dirname "$file")" || mkdir -p "$(dirname "$file")"
     touch "$file"
   done
 }
