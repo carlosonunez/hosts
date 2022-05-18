@@ -7,6 +7,22 @@ HOSTS_WITHOUT_FACEBOOK="$SCRIPT_DIR/hosts/without-fb.txt"
 SOURCES_FILE="$SCRIPT_DIR/sources.yaml"
 EXCLUSIONS_FILE="$SCRIPT_DIR/exclusions"
 ALL_FILES="${HOSTS_WITH_FACEBOOK},${HOSTS_WITHOUT_FACEBOOK}"
+GNU_SED_CONFIRMED=0
+
+gnu_sed() {
+  # if sed errors when running --version then it's probably the BSD variant.
+  if ! &>/dev/null sed --version
+  then
+    if test GNU_SED_CONFIRMED=0 && ! which gsed &>/dev/null
+    then
+      fail "this script requires GNU sed, or gsed, on MacOS. Install it with 'brew install coreutils'"
+    fi
+    GNU_SED_CONFIRMED=1
+    gsed "$@"
+  else
+    sed "$@"
+  fi
+}
 
 fail() {
   >&2 echo "ERROR: $1"
@@ -38,21 +54,12 @@ gather_sources() {
 
 process_whitelist() {
   match_re="^0.0.0.0 ($(grep -Ev '^#' "$EXCLUSIONS_FILE" | tr '\n' '%' | sed 's#%#\|#g; s/.$//g'))$"
-  >&2 echo "===> DEBUG: Match regexp: $match_re"
   for file in $(tr ',' '\n' <<< "$ALL_FILES")
   do
     while read -r pattern
     do
       >&2 echo "===> Removing from $file: $pattern"
-      # if sed errors when running --version then it's probably the BSD variant.
-      case "$(uname)" in
-        Darwin|darwin)
-          gsed -Ei "/$pattern/d" "$file"
-          ;;
-        Linux|linux)
-          sed -Ei "/$pattern/d" "$file"
-          ;;
-      esac
+      gnu_sed -Ei "/$pattern/d" "$file"
     done < <(grep -E "$match_re" "$file")
   done
 }
@@ -61,7 +68,7 @@ clean_hosts_files() {
   for file in $(tr ',' '\n' <<< "$ALL_FILES")
   do
     sort -ro "$file" "$file" &&
-      gsed -i "/^#/d" "$file"
+      gnu_sed -i "/^#/d" "$file"
   done
 }
 
