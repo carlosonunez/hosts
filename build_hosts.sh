@@ -45,12 +45,14 @@ process_whitelist() {
     do
       >&2 echo "===> Removing from $file: $pattern"
       # if sed errors when running --version then it's probably the BSD variant.
-      if ! &>/dev/null sed --version
-      then
-        gsed -Ei "/$pattern/d" "$file"
-      else
-        sed -Ei "/$pattern/d" "$file"
-      fi
+      case "$(uname)" in
+        Darwin|darwin)
+          gsed -Ei "/$pattern/d" "$file"
+          ;;
+        Linux|linux)
+          sed -Ei "/$pattern/d" "$file"
+          ;;
+      esac
     done < <(grep -E "$match_re" "$file")
   done
 }
