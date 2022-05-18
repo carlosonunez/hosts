@@ -11,9 +11,3 @@ sources:
   - name: Developer Dan's Hate and Junk List
     url: https://www.github.developerdan.com/hosts/lists/hate-and-junk-extended.txt
     blocks_fb: false
-  - name: Steven Black's gambling+social+fakenews
-    url: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling-social/hosts
-    blocks_fb: true
-  - name: Steven Black's gambling+fakenews
-    url: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts
-    blocks_fb: false
