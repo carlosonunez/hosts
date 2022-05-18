@@ -33,7 +33,7 @@ jobs:
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')"
       - name: Release latest versions
-        uses: softprops/actions-gh-release@v1
+        uses: softprops/action-gh-release@v1
         with:
           token: "${{secrets.GITHUB_TOKEN}}"
           files: hosts/**
