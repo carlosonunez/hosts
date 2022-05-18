@@ -66,13 +66,14 @@ do
   name=$(cut -f1 -d '%' <<< "$source")
   url=$(cut -f2 -d '%' <<< "$source")
   blocks_fb=$(cut -f3 -d '%' <<< "$source")
-  target_file="$HOSTS_WITHOUT_FACEBOOK"
-  if grep -Eiq '^true$' <<< "$blocks_fb"
+  >&2 echo "===> Fetching hosts from source: $name"
+  hosts=$(curl -sSL "$url")
+  echo "$hosts" >> "$HOSTS_WITH_FACEBOOK"
+  if grep -Eiq '^false$' <<< "$blocks_fb"
   then
-    target_file="${HOSTS_WITH_FACEBOOK}"
+    echo "$hosts" >> "$HOSTS_WITHOUT_FACEBOOK"
   fi
-  >&2 echo "===> Fetching hosts from source: $name ==> $target_file"
-  curl -sSL "$url" >> "$target_file"
+
 done < <(gather_sources)
 process_whitelist &&
 >&2 echo "===> Host files are ready"
