@@ -39,8 +39,8 @@ jobs:
       - name: Get number of hosts
         id: host-count
         run: >
-          echo "::set-output name=with-fb::$(wc -l with-fb.txt)";
-          echo "::set-output name=without-fb::$(wc -l without-fb.txt)";
+          echo "::set-output name=with-fb::$(printf \"%'d\" $(wc -l with-fb.txt | cut -f1 -d ' '))";
+          echo "::set-output name=without-fb::$(printf \"%'d\" $(wc -l without-fb.txt | cut -f1 -d ' '))";
       - name: Release latest version
         uses: softprops/action-gh-release@v1
         with:
@@ -49,8 +49,9 @@ jobs:
           tag_name: latest
           body: >
             These are Carlos's Hosts created on ${{ steps.date.outputs.date }}.
-            There are "${{steps.host-count.outputs.without-fb}}" hosts on the list without Facebook exclusions, \
-            and "${{steps.host-count.outputs.with-fb}}" hosts on the list with Facebook exclusions.
+            Number of domains blocked by each file:
+            - Without Facebook: ${{steps.host-count.outputs.without-fb}}
+            - With Facebook: ${{steps.host-count.outputs.with-fb}}
 
       - name: Release dated version
         uses: softprops/action-gh-release@v1
@@ -60,6 +61,7 @@ jobs:
           tag_name: "${{steps.date.outputs.date-release}}"
           body: >
             These are Carlos's Hosts created on ${{ steps.date.outputs.date }}.
-            There are "${{steps.host-count.outputs.without-fb}}" hosts on the list without Facebook exclusions, \
-            and "${{steps.host-count.outputs.with-fb}}" hosts on the list with Facebook exclusions.
+            Number of domains blocked by each file:
+            - Without Facebook: ${{steps.host-count.outputs.without-fb}}
+            - With Facebook: ${{steps.host-count.outputs.with-fb}}
             If you need the latest version, use the release tagged 'latest'.
