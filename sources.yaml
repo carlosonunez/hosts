@@ -1,13 +1,61 @@
+files:
+  - name: full
+    whitelists: []
+  - name: with-fb
+    whitelists:
+      - whatsapp
+      - reddit
+      - linkedin
+      - twitter
+  - name: without-fb
+    whitelists:
+      - reddit
+      - linkedin
+      - twitter
 sources:
   - name: Developer Dan's Hosts and Tracking List
     url: https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt
-    blocks_fb: false
   - name: Developer Dan's de-AMP List
     url: https://www.github.developerdan.com/hosts/lists/amp-hosts-extended.txt
-    blocks_fb: false
-  - name: Developer Dan's de-Facebook List
-    url: https://www.github.developerdan.com/hosts/lists/facebook-extended.txt
-    blocks_fb: true
   - name: Developer Dan's Hate and Junk List
     url: https://www.github.developerdan.com/hosts/lists/hate-and-junk-extended.txt
-    blocks_fb: false
+  - name: Developer Dan's de-Facebook List
+    url: https://www.github.developerdan.com/hosts/lists/facebook-extended.txt
+    exclude_files:
+      - without-fb
+  - name: Steven Black's Gambling and Fake News List
+    url: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts
+whitelists:
+  - name: whatsapp
+    patterns:
+      - mmg-fna\.whatsapp\.net
+      - mmg\.whatsapp\.net
+      - whatsapp\.com
+      - whatsapp\.net
+  - name: linkedin
+    patterns:
+      - linkedin\.com
+      - media\.licdn\.com
+      - static\.licdn\.com
+      - www\.licdn\.com
+      - www\.linkedin\.com
+      - engineering\.linkedin\.com
+  - name: twitter
+    patterns:
+      - t\.co
+      - www\.t\.co
+      - twimg\.com
+      - twitter\.com
+  - name: reddit
+    patterns:
+      - i\.redd\.it
+      - i\.reddit\.com
+      - www\.reddit\.com
+      - preview\.redd\.it
+      - preview\.redd\.it
+      - oauth\.reddit\.com
+      - reddit\.com
+      - old\.reddit\.com
+      - reddit\.map\.fastly\.net
+      - v\.redd\.it
+      - www\.redditstatic\.com

@@ -14,7 +14,7 @@ jobs:
       - name: Generate hosts files
         run: ./build_hosts.sh
       - name: Confirm hosts were created
-        run: "stat ./hosts/{with,without}-fb.txt &>/dev/null || exit 1"
+        run: "stat ./hosts/{with,without,full}-fb.txt &>/dev/null || exit 1"
       - name: Store hosts as artifact
         uses: actions/upload-artifact@v3
         with:
@@ -41,6 +41,7 @@ jobs:
         run: >
           echo "::set-output name=with-fb::$(wc -l with-fb.txt | cut -f1 -d ' ')";
           echo "::set-output name=without-fb::$(wc -l without-fb.txt | cut -f1 -d ' ')";
+          echo "::set-output name=full::$(wc -l full.txt | cut -f1 -d ' ')";
       - name: Release latest version
         uses: softprops/action-gh-release@v1
         with:
@@ -50,7 +51,8 @@ jobs:
           body: >
             These are Carlos's Hosts created on ${{ steps.date.outputs.date }}.
             There are ${{steps.host-count.outputs.without-fb}} hosts on the list without Facebook exclusions,
-            and ${{steps.host-count.outputs.with-fb}} hosts on the list with Facebook exclusions.
+            ${{steps.host-count.outputs.with-fb}} hosts on the list with Facebook exclusions, and
+            ${{steps.host-found.outputs.full}} hosts on the list with no exclusions.
 
       - name: Release dated version
         uses: softprops/action-gh-release@v1
@@ -61,5 +63,5 @@ jobs:
           body: >
             These are Carlos's Hosts created on ${{ steps.date.outputs.date }}.
             There are ${{steps.host-count.outputs.without-fb}} hosts on the list without Facebook exclusions,
-            and ${{steps.host-count.outputs.with-fb}} hosts on the list with Facebook exclusions.
-            If you need the latest version, use the release tagged 'latest'.
+            ${{steps.host-count.outputs.with-fb}} hosts on the list with Facebook exclusions, and
+            ${{steps.host-found.outputs.full}} hosts on the list with no exclusions.
