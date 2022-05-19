@@ -134,6 +134,7 @@ process_whitelists() {
     while read -r pattern
     do
       >&2 echo "[$file] Removing from this file: $pattern"
+      gsed -i "/$pattern/d" "$(hosts_file_path "$file")"
     done < <(grep -E "$match_re" "$(hosts_file_path "$file")")
   done
 }
