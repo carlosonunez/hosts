@@ -33,8 +33,10 @@ jobs:
         run: "stat *.txt &>/dev/null || exit 1"
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')"
-      - name: Release latest versions
+        run: >
+          echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')";
+          echo "::set-output name=date-release::$(date +'%Y%m%d')";
+      - name: Release latest version
         uses: softprops/action-gh-release@v1
         with:
           token: "${{secrets.GITHUB_TOKEN}}"
@@ -42,3 +44,12 @@ jobs:
           tag_name: latest
           body: >
             These are Carlos's Hosts created on ${{ steps.date.outputs.date }}.
+      - name: Release dated version
+        uses: softprops/action-gh-release@v1
+        with:
+          token: "${{secrets.GITHUB_TOKEN}}"
+          files: '**.txt'
+          tag_name: "${{steps.date.outputs.date-release}}"
+          body: >
+            These are Carlos's Hosts created on ${{ steps.date.outputs.date }}.
+            If you need the latest version, use the release tagged 'latest'.
