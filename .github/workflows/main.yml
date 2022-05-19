@@ -35,7 +35,7 @@ jobs:
         id: date
         run: >
           echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M:%S %Z')";
-          echo "::set-output name=date-release::$(date +'%Y%m%d')";
+          echo "::set-output name=date-release::$(date +'%Y.%m.%d')";
       - name: Release latest version
         uses: softprops/action-gh-release@v1
         with:
