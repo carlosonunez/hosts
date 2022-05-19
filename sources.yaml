@@ -32,6 +32,8 @@ whitelists:
       - mmg\.whatsapp\.net
       - whatsapp\.com
       - whatsapp\.net
+      - whatsapp-.*fbcdn\.net
+      - media-.*whatsapp\.net
   - name: linkedin
     patterns:
       - linkedin\.com
