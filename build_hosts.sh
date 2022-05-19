@@ -5,6 +5,15 @@ FILES_DIR="${FILES_DIR:-$SCRIPT_DIR}"
 SOURCES_FILE="$SCRIPT_DIR/sources.yaml"
 GNU_SED_CONFIRMED=0
 
+fail() {
+  >&2 echo "ERROR: $1"
+  exit 1
+}
+
+yq() {
+  $(which yq) -o=json "$SOURCES_FILE" | $(which jq) "$@"
+}
+
 gnu_sed() {
   # if sed errors when running --version then it's probably the BSD variant.
   if ! &>/dev/null sed --version
@@ -20,9 +29,12 @@ gnu_sed() {
   fi
 }
 
-fail() {
-  >&2 echo "ERROR: $1"
-  exit 1
+confirm_yq_or_exit() {
+  ( 2>&1 $(which yq) --version | grep -q 'mikefarah' ) || fail "[core] yq not installed"
+}
+
+confirm_jq_or_exit() {
+  &>/dev/null which jq || fail "[core] yq not installed"
 }
 
 hosts_file_path() {
@@ -32,15 +44,19 @@ hosts_file_path() {
 create_host_files_and_dirs() {
   for file in $1
   do
-    fp=$(hosts_file_path "$1")
+    fp=$(hosts_file_path "$file")
     dir=$(dirname "$fp")
-    test -f "$fp" && rm -f "$fp"
+    if test -f "$fp"
+    then
+      >&2 echo "[core] Removing $file"
+      rm -f "$fp"
+    fi
     (mkdir -p "$dir" && touch "$fp") || fail "[$fp] Couldn't create ths file; see logs"
   done
 }
 
 gather_sources() {
-  yq -r '.sources[] | .name' "$SOURCES_FILE"
+  yq -r '.sources[] | .name'
 }
 
 process_whitelist() {
@@ -62,7 +78,7 @@ write_hosts_files() {
   files="$2"
   data=$(yq --arg source "$src" -r \
     '.sources[] | select(.name == $source) | .name + "%" + .url + "%" +
-      (if .exclude_files != null then (.exclude_files | join(",")) else "none" end)' "$SOURCES_FILE")
+      (if .exclude_files != null then (.exclude_files | join(",")) else "none" end)')
   if test -z "$data" || grep 'null' <<< "$data"
   then
     fail "[$src] Unable to find one or more fields"
@@ -71,15 +87,20 @@ write_hosts_files() {
   url="$(cut -f2 -d '%' <<< "$data")"
   files_to_skip=$(cut -f3 -d '%' <<< "$data")
   >&2 echo "[$name] Downloading domains from '$url'..."
-  domains=$(curl -sL "$url") || fail "[$name] Failed to download, or source has no content"
+  curl -sLo /tmp/domains "$url"
+  test -s /tmp/domains || fail "[$name] Failed to download, or source has no content"
+  count=$(wc -l /tmp/domains | cut -f1 -d ' ')
   for file in $files
   do
     if ! grep -q "$file" <<< "$files_to_skip"
     then
-      >&2 echo "[$name] Writing to '$(hosts_file_path "$file")'..."
-      cat >>"$(hosts_file_path "$file")" <<< "$domains"
+      fp=$(hosts_file_path "$file")
+      cat /tmp/domains >> "$fp"
+      count=$(wc -l "$fp" | cut -f1 -d ' ')
+      >&2 echo "[$name] Wrote $count domains to $fp"
     fi
   done
+  rm /tmp/domains
 }
 
 sort_and_remove_duplicates() {
@@ -101,11 +122,11 @@ process_whitelists() {
   do
     regexps=""
     whitelists="$(yq -r --arg file "$file" \
-      '.files[] | select(.name == $file) | .whitelists[]' "$SOURCES_FILE")"
+      '.files[] | select(.name == $file) | .whitelists[]')"
     for whitelist in $whitelists
     do
       patterns=$(yq -r --arg whitelist "$whitelist" \
-        '.whitelists[] | select(.name == $whitelist) | .patterns | join("%")' "$SOURCES_FILE")
+        '.whitelists[] | select(.name == $whitelist) | .patterns | join("%")')
       pattern_count=$(tr '%' '\n' <<< "$patterns" | wc -l)
       >&2 echo "[$file] Adding $pattern_count patterns from whitelist: $whitelist"
       regexps="$regexps%$patterns"
@@ -119,11 +140,13 @@ process_whitelists() {
 }
 
 gather_files() {
-  yq -r '.files[].name' "$SOURCES_FILE"
+  yq -r '.files[].name'
 }
 
+confirm_yq_or_exit
+confirm_jq_or_exit
 files=$(gather_files)
-create_host_files_and_dirs $files
+create_host_files_and_dirs "$files"
 gather_sources |
   while read -r src
   do write_hosts_files "$src" "$files"
