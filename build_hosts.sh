@@ -87,20 +87,19 @@ write_hosts_files() {
   url="$(cut -f2 -d '%' <<< "$data")"
   files_to_skip=$(cut -f3 -d '%' <<< "$data")
   >&2 echo "[$name] Downloading domains from '$url'..."
-  curl -sLo /tmp/domains "$url"
-  test -s /tmp/domains || fail "[$name] Failed to download, or source has no content"
-  count=$(wc -l /tmp/domains | cut -f1 -d ' ')
+  domains=$(curl -sL "$url")
+  test -z "$domains" && fail "[$name] This source contained no domains."
+  count=$(wc -l <<< "$domains" | cut -f1 -d ' ')
+  >&2 echo "[$name] Writing $count domains to files:"
   for file in $files
   do
     if ! grep -q "$file" <<< "$files_to_skip"
     then
       fp=$(hosts_file_path "$file")
-      cat /tmp/domains >> "$fp"
-      count=$(wc -l "$fp" | cut -f1 -d ' ')
-      >&2 echo "[$name] Wrote $count domains to $fp"
+      >&2 echo "[$name] --> $fp"
+      cat >>"$fp" <<< "$domains"
     fi
   done
-  rm /tmp/domains
 }
 
 sort_and_remove_duplicates() {
