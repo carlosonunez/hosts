@@ -49,8 +49,8 @@ jobs:
           tag_name: latest
           body: >
             These are Carlos's Hosts created on ${{ steps.date.outputs.date }}.
-            There are "${{steps.host-count.outputs.without-fb}}" hosts on the list without Facebook exclusions,
-            and "${{steps.host-count.outputs.with-fb}}" hosts on the list with Facebook exclusions.
+            There are ${{steps.host-count.outputs.without-fb}} hosts on the list without Facebook exclusions,
+            and ${{steps.host-count.outputs.with-fb}} hosts on the list with Facebook exclusions.
 
       - name: Release dated version
         uses: softprops/action-gh-release@v1
@@ -60,6 +60,6 @@ jobs:
           tag_name: "${{steps.date.outputs.date-release}}"
           body: >
             These are Carlos's Hosts created on ${{ steps.date.outputs.date }}.
-            There are "${{steps.host-count.outputs.without-fb}}" hosts on the list without Facebook exclusions,
-            and "${{steps.host-count.outputs.with-fb}}" hosts on the list with Facebook exclusions.
+            There are ${{steps.host-count.outputs.without-fb}} hosts on the list without Facebook exclusions,
+            and ${{steps.host-count.outputs.with-fb}} hosts on the list with Facebook exclusions.
             If you need the latest version, use the release tagged 'latest'.
