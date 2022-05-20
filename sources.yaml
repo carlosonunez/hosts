@@ -7,6 +7,24 @@ files:
       - reddit
       - linkedin
       - twitter
+  - name: adguard-compatible-without-fb
+    description: >
+      AdGuard for iOS seems to have a 500k domain limit. This excludes the domains in
+      Steven Black's list to "work around" that.
+    whitelists:
+      - whatsapp
+      - reddit
+      - linkedin
+      - twitter
+  - name: adguard-compatible-with-fb
+    description: >
+      AdGuard for iOS seems to have a 500k domain limit. This excludes the domains in
+      Steven Black's list to "work around" that.
+    whitelists:
+      - whatsapp
+      - reddit
+      - linkedin
+      - twitter
   - name: without-fb
     whitelists:
       - reddit
@@ -23,8 +41,12 @@ sources:
     url: https://www.github.developerdan.com/hosts/lists/facebook-extended.txt
     exclude_files:
       - without-fb
+      - adguard-compatible-without-fb
   - name: Steven Black's Gambling and Fake News List
     url: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts
+    exclude_files:
+      - adguard-compatible-without-fb
+      - adguard-compatible-with-fb
 whitelists:
   - name: whatsapp
     patterns:
