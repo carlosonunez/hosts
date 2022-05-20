@@ -59,20 +59,6 @@ gather_sources() {
   yq -r '.sources[] | .name'
 }
 
-process_whitelist() {
-  match_re="^0.0.0.0 ($(grep -Ev '^#' "$EXCLUSIONS_FILE" | tr '\n' '%' | sed 's#%#\|#g; s/.$//g'))$"
-  for file in $(tr ',' '\n' <<< "$ALL_FILES")
-  do
-    while read -r pattern
-    do
-      >&2 echo "Removing from $file: $pattern"
-      gnu_sed -Ei "/$pattern/d" "$file"
-    done < <(grep -E "$match_re" "$file")
-    gnu_sed -Ei "/^$/d; /^#/d; /^[ ]+#/d" "$file"
-    sort -ruo "$file" "$file"
-  done
-}
-
 write_hosts_files() {
   src="$1"
   files="$2"
@@ -85,7 +71,7 @@ write_hosts_files() {
   fi
   name="$(cut -f1 -d '%' <<< "$data")"
   url="$(cut -f2 -d '%' <<< "$data")"
-  files_to_skip=$(cut -f3 -d '%' <<< "$data")
+  files_to_skip=$(cut -f3 -d '%' <<< "$data" | tr ',' '\n')
   >&2 echo "[$name] Downloading domains from '$url'..."
   domains=$(curl -sL "$url")
   test -z "$domains" && fail "[$name] This source contained no domains."
@@ -93,7 +79,7 @@ write_hosts_files() {
   >&2 echo "[$name] Writing $count domains to files:"
   for file in $files
   do
-    if ! grep -q "$file" <<< "$files_to_skip"
+    if ! grep -Eq "^$file$" <<< "$files_to_skip"
     then
       fp=$(hosts_file_path "$file")
       >&2 echo "[$name] --> $fp"
@@ -108,7 +94,7 @@ sort_and_remove_duplicates() {
     fp=$(hosts_file_path "$file")
     orig_count=$(wc -l "$fp" | cut -f1 -d ' ')
     >&2 echo "[$file] Sorting and removing dupes..."
-    sort -ruo "$fp" "$fp"
+    sort -uo "$fp" "$fp"
     final_count=$(wc -l "$fp" | cut -f1 -d ' ')
     diff=$(echo "${final_count}-${orig_count}" | bc)
     >&2 echo "[$file] $diff duplicate domains removed (orig: $orig_count, final: $final_count)"
@@ -149,8 +135,8 @@ files=$(gather_files)
 create_host_files_and_dirs "$files"
 gather_sources |
   while read -r src
-  do write_hosts_files "$src" "$files"
+  do write_hosts_files "$src" "$files" || exit 1
   done
-sort_and_remove_duplicates "$files"
-process_whitelists "$files"
+sort_and_remove_duplicates "$files" || exit 1
+process_whitelists "$files" || exit 1
 >&2 echo "[core] Script complete"
