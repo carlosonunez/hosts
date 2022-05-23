@@ -89,15 +89,22 @@ write_hosts_files() {
 }
 
 sort_and_remove_duplicates() {
+  _do_and_print_diff() {
+    fp="$1"
+    prefix="$2"
+    orig_count=$(wc -l "$fp" | cut -f1 -d ' ')
+    "${@:3}"
+    final_count=$(wc -l "$fp" | cut -f1 -d ' ')
+    diff=$(echo "${orig_count}-${final_count}" | bc)
+    >&2 echo "[$file] $diff $prefix removed (orig: $orig_count, final: $final_count)"
+  }
   for file in $files
   do
     fp=$(hosts_file_path "$file")
-    orig_count=$(wc -l "$fp" | cut -f1 -d ' ')
     >&2 echo "[$file] Sorting and removing dupes..."
-    sort -uo "$fp" "$fp"
-    final_count=$(wc -l "$fp" | cut -f1 -d ' ')
-    diff=$(echo "${final_count}-${orig_count}" | bc)
-    >&2 echo "[$file] $diff duplicate domains removed (orig: $orig_count, final: $final_count)"
+    _do_and_print_diff "$fp" "duplicate domains" sort -uio "$fp" "$fp"
+    >&2 echo "[$file] Removing comments..."
+    _do_and_print_diff "$fp" "comments" gnu_sed -E -i '/^([ \t]+)?#/d' "$fp"
   done
 }
 
@@ -120,7 +127,7 @@ process_whitelists() {
     while read -r pattern
     do
       >&2 echo "[$file] Removing from this file: $pattern"
-      gsed -i "/$pattern/d" "$(hosts_file_path "$file")"
+      gnu_sed -i "/$pattern/d" "$(hosts_file_path "$file")"
     done < <(grep -E "$match_re" "$(hosts_file_path "$file")")
   done
 }
