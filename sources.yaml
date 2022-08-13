@@ -57,6 +57,7 @@ whitelists:
       - whatsapp-.*fbcdn\.net
       - media-.*whatsapp\.net
       - media-.*\.cdn\.whatsapp.net
+      - cdn.whatsapp.net
   - name: linkedin
     patterns:
       - linkedin\.com
