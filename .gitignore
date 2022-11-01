@@ -1,1 +1,3 @@
 hosts
+*.rendered
+sources.yaml.*

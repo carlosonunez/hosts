@@ -3,8 +3,27 @@
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 FILES_DIR="${FILES_DIR:-$SCRIPT_DIR}"
 SOURCES_FILE="$SCRIPT_DIR/sources.yaml"
+SOURCES_FILE_RENDERED="$SCRIPT_DIR/sources.yaml.rendered"
 GNU_SED_CONFIRMED=0
+FIREBOG_URL="https://v.firebog.net/hosts/csv.txt"
 export LC_ALL=C
+
+_csvtojson()
+{
+    function _do_it ()
+    {
+        python -c 'import csv, json, sys; print(json.dumps([dict(r) for r in csv.DictReader(sys.stdin)]))'
+    };
+    if ! test -z "$1"; then
+        if test -e "$1"; then
+            _do_it < "$1";
+        else
+            echo -e "$1" | _do_it;
+        fi;
+    else
+        _do_it < /dev/stdin;
+    fi
+}
 
 fail() {
   >&2 echo "ERROR: $1"
@@ -18,8 +37,47 @@ gnu_sort() {
   fi
 }
 
+
 yq() {
-  $(which yq) -o=json "$SOURCES_FILE" | $(which jq) "$@"
+  $(which yq) -o=json "$SOURCES_FILE_RENDERED" | $(which yq) "$@"
+}
+
+render_sources_file() {
+  _render_firebog() {
+    local src="$1"
+    local dst="$2"
+    local start_line='"type","status","page","name","url"'
+    local domains=$(curl -L "$FIREBOG_URL")
+    if test -z "$domains"
+    then
+      fail "Failed to retrieve list of domains from Firebog"
+      return 1
+    fi
+    local csv="$(echo -ne "${start_line}\n${domains}")"
+    local list=$(_csvtojson <<< "$csv" |
+      $(which yq) -P '[.[] | select(.status != "cross") | { "name": "[" + .type + "] " + .name , "url": .url }]' |
+      sed "s/'/\"/g; s/\"\"/'/g; s/^/  /g")
+    if test -z "$list"
+    then
+      fail "Failed to retrieve lists from Firebog"
+      return 1
+    fi
+    lines=$(wc -l <<< "$list")
+    lines_single=$(awk '{printf "%s\\n", $0}' <<< "$list")
+    >&2 echo "[pre] Rendering $lines domains from Firebog"
+    gnu_sed "s#{{ firebog }}#$lines_single#" "$src" | grep -Ev "^$" > "$dst"
+  }
+  _finish_rendering() {
+    local src="$1"
+    local dst="$2"
+    >&2 echo "[pre] Wrapping up rendering the sources file"
+    mv "$src" "$dst"
+  }
+  starting_file="$SOURCES_FILE"
+  step_1="${starting_file}.1"
+  ending_file="$SOURCES_FILE_RENDERED"
+  _render_firebog "$starting_file" "$step_1" || return 1
+  _finish_rendering "$step_1" "$ending_file" || return 1
 }
 
 gnu_sed() {
@@ -146,6 +204,11 @@ gather_files() {
 
 confirm_yq_or_exit
 confirm_jq_or_exit
+if ! render_sources_file
+then
+  fail "Failed to generate source file; see logs for more details."
+  exit 1
+fi
 files=$(gather_files)
 create_host_files_and_dirs "$files"
 orig_ifs="$IFS"
