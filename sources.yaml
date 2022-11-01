@@ -7,30 +7,104 @@ files:
       - reddit
       - linkedin
       - twitter
-  - name: adguard-compatible-without-fb
-    description: >
-      AdGuard for iOS seems to have a 500k domain limit. This excludes the domains in
-      Steven Black's list to "work around" that.
-    whitelists:
-      - whatsapp
-      - reddit
-      - linkedin
-      - twitter
-  - name: adguard-compatible-with-fb
-    description: >
-      AdGuard for iOS seems to have a 500k domain limit. This excludes the domains in
-      Steven Black's list to "work around" that.
-    whitelists:
-      - whatsapp
-      - reddit
-      - linkedin
-      - twitter
   - name: without-fb
     whitelists:
       - reddit
       - linkedin
       - twitter
 sources:
+  - name: StevenBlack
+    address: https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+  - name: AdAway
+    address: https://adaway.org/hosts.txt
+  - name: EasyPrivacy
+    address: https://v.firebog.net/hosts/Easyprivacy.txt
+  - name: DandelionSprout
+    address: https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt
+  - name: CoinBlock
+    address: https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts
+  - name: Firebog lists
+    address: https://v.firebog.net/hosts/static/w3kbl.txt
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt
+  - name: Firebog lists
+    address: https://someonewhocares.org/hosts/zero/hosts
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/VeleSila/yhosts/master/hosts
+  - name: Firebog lists
+    address: https://winhelp2002.mvps.org/hosts.txt
+  - name: Firebog lists
+    address: https://v.firebog.net/hosts/neohostsbasic.txt
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/RooneyMcNibNug/pihole-stuff/master/SNAFU.txt
+  - name: Firebog lists
+    address: https://paulgb.github.io/BarbBlock/blacklists/hosts-file.txt
+  - name: Firebog lists
+    address: https://v.firebog.net/hosts/AdguardDNS.txt
+  - name: Firebog lists
+    address: https://v.firebog.net/hosts/Admiral.txt
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt
+  - name: Firebog lists
+    address: https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+  - name: Firebog lists
+    address: https://v.firebog.net/hosts/Easylist.txt
+  - name: Firebog lists
+    address: https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/jdlingyu/ad-wars/master/hosts
+  - name: Firebog lists
+    address: https://v.firebog.net/hosts/Prigent-Ads.txt
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt
+  - name: Firebog lists
+    address: https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt
+  - name: Firebog lists
+    address: https://hostfiles.frogeye.fr/multiparty-trackers-hosts.txt
+  - name: Firebog lists
+    address: https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/android-tracking.txt
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV.txt
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/AmazonFireTV.txt
+  - name: Firebog lists
+    address: https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-blocklist.txt
+  - name: Firebog lists
+    address: https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt
+  - name: Firebog lists
+    address: https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt
+  - name: Firebog lists
+    address: https://v.firebog.net/hosts/Prigent-Crypto.txt
+  - name: Firebog lists
+    address: https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt
+  - name: Firebog lists
+    address: https://phishing.army/download/phishing_army_blocklist_extended.txt
+  - name: Firebog lists
+    address: https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt
+  - name: Firebog lists
+    address: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts
+  - name: Firebog lists
+    address: https://urlhaus.abuse.ch/downloads/hostfile/
+  - name: Firebog lists
+    address: https://v.firebog.net/hosts/Prigent-Malware.txt
+  - name: Firebog lists
+    address: https://v.firebog.net/hosts/Shalla-mal.txt
+  - name: AdGuard DNS
+    address: https://github.com/r-a-y/mobile-hosts/raw/master/AdguardDNS.txt
   - name: Developer Dan's Hosts and Tracking List
     url: https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt
   - name: Developer Dan's de-AMP List
@@ -41,12 +115,6 @@ sources:
     url: https://www.github.developerdan.com/hosts/lists/facebook-extended.txt
     exclude_files:
       - without-fb
-      - adguard-compatible-without-fb
-  - name: Steven Black's Gambling and Fake News List
-    url: https://raw.githubusercontent.com/StevenBlack/hosts/master/alternates/fakenews-gambling/hosts
-    exclude_files:
-      - adguard-compatible-without-fb
-      - adguard-compatible-with-fb
 whitelists:
   - name: whatsapp
     patterns:
