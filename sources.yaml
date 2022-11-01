@@ -14,97 +14,93 @@ files:
       - twitter
 sources:
   - name: StevenBlack
-    address: https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+    url: https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
   - name: AdAway
-    address: https://adaway.org/hosts.txt
+    url: https://adaway.org/hosts.txt
   - name: EasyPrivacy
-    address: https://v.firebog.net/hosts/Easyprivacy.txt
+    url: https://v.firebog.net/hosts/Easyprivacy.txt
   - name: DandelionSprout
-    address: https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt
+    url: https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt
   - name: CoinBlock
-    address: https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts
-  - name: Firebog lists
-    address: https://v.firebog.net/hosts/static/w3kbl.txt
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt
-  - name: Firebog lists
-    address: https://someonewhocares.org/hosts/zero/hosts
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/VeleSila/yhosts/master/hosts
-  - name: Firebog lists
-    address: https://winhelp2002.mvps.org/hosts.txt
-  - name: Firebog lists
-    address: https://v.firebog.net/hosts/neohostsbasic.txt
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/RooneyMcNibNug/pihole-stuff/master/SNAFU.txt
-  - name: Firebog lists
-    address: https://paulgb.github.io/BarbBlock/blacklists/hosts-file.txt
-  - name: Firebog lists
-    address: https://v.firebog.net/hosts/AdguardDNS.txt
-  - name: Firebog lists
-    address: https://v.firebog.net/hosts/Admiral.txt
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt
-  - name: Firebog lists
-    address: https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
-  - name: Firebog lists
-    address: https://v.firebog.net/hosts/Easylist.txt
-  - name: Firebog lists
-    address: https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/jdlingyu/ad-wars/master/hosts
-  - name: Firebog lists
-    address: https://v.firebog.net/hosts/Prigent-Ads.txt
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt
-  - name: Firebog lists
-    address: https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt
-  - name: Firebog lists
-    address: https://hostfiles.frogeye.fr/multiparty-trackers-hosts.txt
-  - name: Firebog lists
-    address: https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/android-tracking.txt
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV.txt
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/AmazonFireTV.txt
-  - name: Firebog lists
-    address: https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-blocklist.txt
-  - name: Firebog lists
-    address: https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt
-  - name: Firebog lists
-    address: https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt
-  - name: Firebog lists
-    address: https://v.firebog.net/hosts/Prigent-Crypto.txt
-  - name: Firebog lists
-    address: https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt
-  - name: Firebog lists
-    address: https://phishing.army/download/phishing_army_blocklist_extended.txt
-  - name: Firebog lists
-    address: https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt
-  - name: Firebog lists
-    address: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts
-  - name: Firebog lists
-    address: https://urlhaus.abuse.ch/downloads/hostfile/
-  - name: Firebog lists
-    address: https://v.firebog.net/hosts/Prigent-Malware.txt
-  - name: Firebog lists
-    address: https://v.firebog.net/hosts/Shalla-mal.txt
+    url: https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser
+  - name: Polish Ad-Block
+    url: https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt
+  - name: FadeMind Spam block
+    url: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts
+  - name: WaLLy3K_Blacklist
+    url: https://v.firebog.net/hosts/static/w3kbl.txt
+  - name: Matomo Referrer Spam Block
+    url: https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt
+  - name: Dan Pollock
+    url: https://someonewhocares.org/hosts/zero/hosts
+  - name: IoT Spam
+    url: https://raw.githubusercontent.com/VeleSila/yhosts/master/hosts
+  - name: Winhelp2002's List
+    url: https://winhelp2002.mvps.org/hosts.txt
+  - name: NeoHosts
+    url: https://v.firebog.net/hosts/neohostsbasic.txt
+  - name: JA's Adlist
+    url: https://raw.githubusercontent.com/RooneyMcNibNug/pihole-stuff/master/SNAFU.txt
+  - name: AdguardDNS
+    url: https://v.firebog.net/hosts/AdguardDNS.txt
+  - name: The Admiral
+    url: https://v.firebog.net/hosts/Admiral.txt
+  - name: Anudeep's Ad Servers
+    url: https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt
+  - name: disconnect.me
+    url: https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+  - name: EasyList
+    url: https://v.firebog.net/hosts/Easylist.txt
+  - name: Yoyo
+    url: https://pgl.yoyo.org/adservers/serverlist.php?hostformat=hosts&showintro=0&mimetype=plaintext
+  - name: FadeMind's Windows Installers lists
+    url: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts
+  - name: hostsVN
+    url: https://raw.githubusercontent.com/bigdargon/hostsVN/master/hosts
+  - name: Ad Wars
+    url: https://raw.githubusercontent.com/jdlingyu/ad-wars/master/hosts
+  - name: Prigent Ads
+    url: https://v.firebog.net/hosts/Prigent-Ads.txt
+  - name: "2o7 Tracking Network"
+    url: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts
+  - name: Anti-Windows Telemetry
+    url: https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt
+  - name: First-party trackers
+    url: https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt
+  - name: Multi-party trackers
+    url: https://hostfiles.frogeye.fr/multiparty-trackers-hosts.txt
+  - name: Android Tracking
+    url: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/android-tracking.txt
+  - name: Smart TVs
+    url: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV.txt
+  - name: Fire TVs
+    url: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/AmazonFireTV.txt
+  - name: quidsup
+    url: https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-blocklist.txt
+  - name: OSINT
+    url: https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt
+  - name: disconnect.me Malvertising
+    url: https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt
+  - name: Crypto
+    url: https://v.firebog.net/hosts/Prigent-Crypto.txt
+  - name: Mandiant
+    url: https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt
+  - name: Phishing Army
+    url: https://phishing.army/download/phishing_army_blocklist_extended.txt
+  - name: quidsup notrack
+    url: https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt
+  - name: Spam404
+    url: https://raw.githubusercontent.com/Spam404/lists/master/main-blacklist.txt
+  - name: FadeMind's malware
+    url: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts
+  - name: Abuse List
+    url: https://urlhaus.abuse.ch/downloads/hostfile/
+  - name: Prigent Malware
+    url: https://v.firebog.net/hosts/Prigent-Malware.txt
+  - name: Shalla-mal
+    url: https://v.firebog.net/hosts/Shalla-mal.txt
   - name: AdGuard DNS
-    address: https://github.com/r-a-y/mobile-hosts/raw/master/AdguardDNS.txt
+    url: https://github.com/r-a-y/mobile-hosts/raw/master/AdguardDNS.txt
   - name: Developer Dan's Hosts and Tracking List
     url: https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt
   - name: Developer Dan's de-AMP List

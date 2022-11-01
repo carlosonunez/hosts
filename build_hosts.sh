@@ -4,10 +4,18 @@ SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 FILES_DIR="${FILES_DIR:-$SCRIPT_DIR}"
 SOURCES_FILE="$SCRIPT_DIR/sources.yaml"
 GNU_SED_CONFIRMED=0
+export LC_ALL=C
 
 fail() {
   >&2 echo "ERROR: $1"
   exit 1
+}
+
+gnu_sort() {
+  if ! grep -q 'GNU coreutils' <<< $("$(which sort)" --version)
+  then gsort "$@"
+  else $(which sort) "$@"
+  fi
 }
 
 yq() {
@@ -102,7 +110,7 @@ sort_and_remove_duplicates() {
   do
     fp=$(hosts_file_path "$file")
     >&2 echo "[$file] Sorting and removing dupes..."
-    _do_and_print_diff "$fp" "duplicate domains" sort -uio "$fp" "$fp"
+    _do_and_print_diff "$fp" "duplicate domains" gnu_sort -uio "$fp" "$fp"
     >&2 echo "[$file] Removing comments..."
     _do_and_print_diff "$fp" "comments" gnu_sed -E -i '/^([ \t]+)?#/d' "$fp"
   done
@@ -140,10 +148,12 @@ confirm_yq_or_exit
 confirm_jq_or_exit
 files=$(gather_files)
 create_host_files_and_dirs "$files"
-gather_sources |
-  while read -r src
-  do write_hosts_files "$src" "$files" || exit 1
-  done
+orig_ifs="$IFS"
+IFS=$'\n'
+for source in $(gather_sources)
+do write_hosts_files "$source" "$files" || exit 1
+done
+IFS="$orig_ifs"
 sort_and_remove_duplicates "$files" || exit 1
 process_whitelists "$files" || exit 1
 >&2 echo "[core] Script complete"
