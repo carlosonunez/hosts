@@ -39,7 +39,7 @@ gnu_sort() {
 
 
 yq() {
-  $(which yq) -o=json "$SOURCES_FILE_RENDERED" | $(which yq) "$@"
+  $(which yq) -o=json "$SOURCES_FILE_RENDERED" | $(which jq) "$@"
 }
 
 render_sources_file() {
@@ -56,7 +56,7 @@ render_sources_file() {
     local csv="$(echo -ne "${start_line}\n${domains}")"
     local list=$(_csvtojson <<< "$csv" |
       $(which yq) -P '[.[] | select(.status != "cross") | { "name": "[" + .type + "] " + .name , "url": .url }]' |
-      sed "s/'/\"/g; s/\"\"/'/g; s/^/  /g")
+      sed "s/'/\"/g; s/\"\"/'/g; s/^/  /g; s/"'\&'"/{AMP}/g")
     if test -z "$list"
     then
       fail "Failed to retrieve lists from Firebog"
@@ -65,7 +65,9 @@ render_sources_file() {
     lines=$(wc -l <<< "$list")
     lines_single=$(awk '{printf "%s\\n", $0}' <<< "$list")
     >&2 echo "[pre] Rendering $lines domains from Firebog"
-    gnu_sed "s#{{ firebog }}#$lines_single#" "$src" | grep -Ev "^$" > "$dst"
+    gnu_sed "s#{{ firebog }}#$lines_single#" "$src" |
+      gnu_sed 's/{AMP}/\&/g' |
+      grep -Ev "^$" > "$dst"
   }
   _finish_rendering() {
     local src="$1"
