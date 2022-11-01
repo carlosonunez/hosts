@@ -39,10 +39,7 @@ jobs:
       - name: Get number of hosts
         id: host-count
         run: >
-          echo "::set-output name=with-fb::$(wc -l with-fb.txt | cut -f1 -d ' ')";
           echo "::set-output name=without-fb::$(wc -l without-fb.txt | cut -f1 -d ' ')";
-          echo "::set-output name=adg-with-fb::$(wc -l adguard-compatible-with-fb.txt | cut -f1 -d ' ')";
-          echo "::set-output name=adg-without-fb::$(wc -l adguard-compatible-without-fb.txt | cut -f1 -d ' ')"; 
           echo "::set-output name=full::$(wc -l full.txt | cut -f1 -d ' ')";
       - name: Release latest version
         uses: softprops/action-gh-release@v1
@@ -56,9 +53,6 @@ jobs:
             There are:
             
             - ${{steps.host-count.outputs.without-fb}} hosts on the list without Facebook exclusions,
-            - ${{steps.host-count.outputs.with-fb}} hosts on the list with Facebook exclusions,
-            - ${{steps.host-count.outputs.adg-with-fb}} hosts on the AdGuard-compatible list with Facebook exclusions,
-            - ${{steps.host-count.outputs.adg-without-fb}} hosts on the AdGuard-compatible list without Facebook exclusions, and
             - ${{steps.host-found.outputs.full}} hosts on the list with no exclusions.
       - name: Release dated version
         uses: softprops/action-gh-release@v1
@@ -72,7 +66,4 @@ jobs:
             There are:
             
             - ${{steps.host-count.outputs.without-fb}} hosts on the list without Facebook exclusions,
-            - ${{steps.host-count.outputs.with-fb}} hosts on the list with Facebook exclusions,
-            - ${{steps.host-count.outputs.adg-with-fb}} hosts on the AdGuard-compatible list with Facebook exclusions,
-            - ${{steps.host-count.outputs.adg-without-fb}} hosts on the AdGuard-compatible list without Facebook exclusions, and
             - ${{steps.host-found.outputs.full}} hosts on the list with no exclusions.

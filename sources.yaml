@@ -1,13 +1,13 @@
 files:
   - name: full
+    description: >
+      The whole enchilada. Includes all unique blocked domains from all of the lists
+      below.
     whitelists: []
-  - name: with-fb
-    whitelists:
-      - whatsapp
-      - reddit
-      - linkedin
-      - twitter
   - name: without-fb
+    description: >
+      All unique blocked domains from the lists below excluding those required to make
+      Facebook work (which, unfortunately, also allows Facebook Ad Network tracking).
     whitelists:
       - reddit
       - linkedin
