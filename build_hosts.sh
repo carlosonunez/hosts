@@ -55,7 +55,7 @@ render_sources_file() {
     fi
     local csv="$(echo -ne "${start_line}\n${domains}")"
     local list=$(_csvtojson <<< "$csv" |
-      $(which yq) -P '[.[] | select((.status != "cross") and (.type != "suspicious") and (.name | downcase | contains("adult") | not) and (.name | downcase | contains("porn") | not)) | { "name": "[" + .type + "] " + .name , "url": .url }]' |
+      $(which yq) -P '[.[] | select((.status != "cross") and (.type != "suspicious") and (.name | downcase | contains("adult") | not) and (.url | downcase | contains("porn") | not)) | { "name": "[" + .type + "] " + .name , "url": .url }]' |
       sed "s/'/\"/g; s/\"\"/'/g; s/^/  /g; s/"'\&'"/{AMP}/g")
     if test -z "$list"
     then
